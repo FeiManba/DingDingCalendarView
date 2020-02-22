@@ -340,10 +340,11 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         } else if (id == R.id.re_time_widget) {
             selHour();
         } else if (id == R.id.tv_ok) {//确定
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.CHINA);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
             String day = sdf.format(selectedCalender.getTime());
+            String str = mTvSelPm.getText().toString();
             if (selTimeListener != null) {
-                selTimeListener.selTimeCallBack(day);
+                selTimeListener.selTimeCallBack(day + " " + str);
                 dismiss();
             }
         }
