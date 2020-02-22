@@ -60,6 +60,11 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private Calendar selectedCalender;
     private LinearLayout mLlYearMonth;
     private CalendarIntervalViewAdapter mCalendarViewAdapter;
+    private OnSelTimeListener selTimeListener;
+
+    public void setSelTimeListener(OnSelTimeListener selTimeListener) {
+        this.selTimeListener = selTimeListener;
+    }
 
     public enum SCROLL_TYPE {
         HOUR(1),
@@ -71,6 +76,7 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
 
         public int value;
     }
+
 
     private int scrollUnits = SCROLL_TYPE.HOUR.value + SCROLL_TYPE.MINUTE.value;
 
@@ -117,9 +123,10 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private void initCalendarView() {
         DingDayView dingDayView = new DingDayView(getContext(), R.layout.widget_calendar_day_view);
         CalendarDate calendarDate = new CalendarDate();
-        calendarDate.setYear(2020);
-        calendarDate.setMonth(2);
-        calendarDate.setDay(20);
+        //        Calendar calendar = Calendar.getInstance();
+        //        calendarDate.setYear(calendar.get(Calendar.YEAR));
+        //        calendarDate.setMonth(calendar.get(Calendar.MONTH) - 1);
+        //        calendarDate.setDay(calendar.get(Calendar.DAY_OF_MONTH));
         mCalendarViewAdapter = new CalendarIntervalViewAdapter(getContext(),
                 new OnSelectDateListener() {
                     @Override
@@ -335,8 +342,15 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         } else if (id == R.id.tv_ok) {//确定
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.CHINA);
             String day = sdf.format(selectedCalender.getTime());
-            Toast.makeText(getContext(), day, Toast.LENGTH_SHORT).show();
+            if (selTimeListener != null) {
+                selTimeListener.selTimeCallBack(day);
+                dismiss();
+            }
         }
+    }
+
+    public interface OnSelTimeListener {
+        void selTimeCallBack(String date);
     }
 
     private void selHour() {

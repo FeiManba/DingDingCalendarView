@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.frmanba.dingdingcalendarview.DingCalendarViewDialogFragment;
 
@@ -34,7 +35,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_ding_ding_calendar:
                 //钉钉请假选择日期
                 DingCalendarViewDialogFragment dingCalendarViewDialogFragment = new DingCalendarViewDialogFragment();
-                dingCalendarViewDialogFragment.show(getSupportFragmentManager(),"dingCalendarViewDialogFragment");
+                dingCalendarViewDialogFragment.setSelTimeListener(new DingCalendarViewDialogFragment.OnSelTimeListener() {
+                    @Override
+                    public void selTimeCallBack(String date) {
+                        Toast.makeText(MainActivity.this, date, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dingCalendarViewDialogFragment.show(getSupportFragmentManager(), "dingCalendarViewDialogFragment");
                 break;
         }
     }

@@ -2,6 +2,7 @@ package com.frmanba.dingdingcalendarview.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetricsInt;
@@ -169,12 +170,12 @@ public class DatePickerView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Style.FILL);
         mPaint.setTextAlign(Align.CENTER);
-        mPaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+        mPaint.setColor(Color.parseColor("#333333"));
         //第二个paint
         nPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nPaint.setStyle(Style.FILL);
         nPaint.setTextAlign(Align.CENTER);
-        nPaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+        nPaint.setColor(Color.parseColor("#333333"));
     }
 
     @Override
