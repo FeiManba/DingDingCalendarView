@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.frmanba.dingdingcalendarview.DingCalendarViewDialogFragment;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
@@ -35,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_ding_ding_calendar:
                 //钉钉请假选择日期
                 DingCalendarViewDialogFragment dingCalendarViewDialogFragment = new DingCalendarViewDialogFragment();
+                Calendar instance = Calendar.getInstance();
+                instance.set(Calendar.HOUR_OF_DAY, 8);
+                instance.set(Calendar.MINUTE, 9);
+                dingCalendarViewDialogFragment.setSelectedCalender(instance);
                 dingCalendarViewDialogFragment.setSelTimeListener(new DingCalendarViewDialogFragment.OnSelTimeListener() {
                     @Override
                     public void selTimeCallBack(String date) {

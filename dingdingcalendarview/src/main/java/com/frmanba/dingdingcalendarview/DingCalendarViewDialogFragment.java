@@ -230,8 +230,8 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private void loadComponent() {
         mHourV.setData(hour);
         mMinuteV.setData(minute);
-        mHourV.setSelected(String.valueOf(selectedCalender.get(Calendar.HOUR_OF_DAY)));
-        mMinuteV.setSelected(String.valueOf(selectedCalender.get(Calendar.MINUTE)));
+        mHourV.setSelected(formatTimeUnit(selectedCalender.get(Calendar.HOUR_OF_DAY)));
+        mMinuteV.setSelected(formatTimeUnit(selectedCalender.get(Calendar.MINUTE)));
         executeScroll();
     }
 
