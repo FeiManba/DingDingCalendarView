@@ -62,6 +62,10 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private OnSelTimeListener selTimeListener;
     private View mVWidget;
 
+    public void setSelectedCalender(Calendar selectedCalender) {
+        this.selectedCalender = selectedCalender;
+    }
+
     public void setSelTimeListener(OnSelTimeListener selTimeListener) {
         this.selTimeListener = selTimeListener;
     }
@@ -123,10 +127,9 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private void initCalendarView() {
         DingDayView dingDayView = new DingDayView(getContext(), R.layout.widget_calendar_day_view);
         CalendarDate calendarDate = new CalendarDate();
-        //        Calendar calendar = Calendar.getInstance();
-        //        calendarDate.setYear(calendar.get(Calendar.YEAR));
-        //        calendarDate.setMonth(calendar.get(Calendar.MONTH) - 1);
-        //        calendarDate.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+        calendarDate.setYear(selectedCalender.get(Calendar.YEAR));
+        calendarDate.setMonth(selectedCalender.get(Calendar.MONTH) + 1);
+        calendarDate.setDay(selectedCalender.get(Calendar.DAY_OF_MONTH));
         mCalendarViewAdapter = new CalendarIntervalViewAdapter(getContext(),
                 new OnSelectDateListener() {
                     @Override
@@ -218,6 +221,7 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
                     minute.add(formatTimeUnit(i));
                 }
             }
+
         }
 
         loadComponent();
@@ -226,8 +230,8 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private void loadComponent() {
         mHourV.setData(hour);
         mMinuteV.setData(minute);
-        mHourV.setSelected(0);
-        mMinuteV.setSelected(0);
+        mHourV.setSelected(String.valueOf(selectedCalender.get(Calendar.HOUR_OF_DAY)));
+        mMinuteV.setSelected(String.valueOf(selectedCalender.get(Calendar.MINUTE)));
         executeScroll();
     }
 
@@ -323,13 +327,16 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         mReSelYearMonthWidget.setOnClickListener(this);
         mReTimeWidget.setOnClickListener(this);
         mTvOk.setOnClickListener(this);
-        selectedCalender = Calendar.getInstance();
+        if (selectedCalender == null) {
+            selectedCalender = Calendar.getInstance();
+        }
         int year = selectedCalender.get(Calendar.YEAR);
         int month = selectedCalender.get(Calendar.MONTH) + 1;
         int day = selectedCalender.get(Calendar.DAY_OF_MONTH);
+        int hour = selectedCalender.get(Calendar.HOUR_OF_DAY);
         String selDate = year + "-" + month + "-" + day;
         mTvSelDate.setText(selDate);
-        mTvSelPm.setText("上午");
+        mTvSelPm.setText(hour > 12 ? "下午" : "上午");
         mTvOk.setText("确定");
     }
 
