@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,7 +181,6 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     }
 
     private void initTime() {
-        selectedCalender = Calendar.getInstance();
         spanHour = true;
         spanMin = true;
         addListener();
@@ -322,8 +322,12 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         mReSelYearMonthWidget.setOnClickListener(this);
         mReTimeWidget.setOnClickListener(this);
         mTvOk.setOnClickListener(this);
-
-        mTvSelDate.setText("2020-02-20");
+        selectedCalender = Calendar.getInstance();
+        int year = selectedCalender.get(Calendar.YEAR);
+        int month = selectedCalender.get(Calendar.MONTH) + 1;
+        int day = selectedCalender.get(Calendar.DAY_OF_MONTH);
+        String selDate = year + "-" + month + "-" + day;
+        mTvSelDate.setText(selDate);
         mTvSelPm.setText("上午");
         mTvOk.setText("确定");
 
@@ -340,11 +344,10 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         } else if (id == R.id.re_time_widget) {
             selHour();
         } else if (id == R.id.tv_ok) {//确定
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.CHINA);
             String day = sdf.format(selectedCalender.getTime());
-            String str = mTvSelPm.getText().toString();
             if (selTimeListener != null) {
-                selTimeListener.selTimeCallBack(day + " " + str);
+                selTimeListener.selTimeCallBack(day);
                 dismiss();
             }
         }
