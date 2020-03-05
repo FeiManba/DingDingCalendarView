@@ -254,10 +254,9 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         int year = selectedCalender.get(Calendar.YEAR);
         int month = selectedCalender.get(Calendar.MONTH) + 1;
         int day = selectedCalender.get(Calendar.DAY_OF_MONTH);
-        int hour = selectedCalender.get(Calendar.HOUR_OF_DAY);
         String selDate = year + "-" + month + "-" + day;
         mTvSelDate.setText(selDate);
-        mTvSelPm.setText(hour > 12 ? "下午" : "上午");
+        mTvSelPm.setText(typePm == 1 ? "下午" : "上午");
         mTvOk.setText("确定");
     }
 
