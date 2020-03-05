@@ -38,13 +38,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //钉钉请假选择日期
                 DingCalendarViewDialogFragment dingCalendarViewDialogFragment = new DingCalendarViewDialogFragment();
                 Calendar instance = Calendar.getInstance();
-                instance.set(Calendar.HOUR_OF_DAY, 8);
-                instance.set(Calendar.MINUTE, 9);
                 dingCalendarViewDialogFragment.setSelectedCalender(instance);
+                dingCalendarViewDialogFragment.setTypePm(1);
                 dingCalendarViewDialogFragment.setSelTimeListener(new DingCalendarViewDialogFragment.OnSelTimeListener() {
+                    /**
+                     * @param date   yyyy年MM月dd日
+                     * @param typePm 0 上午 1 下午
+                     */
                     @Override
-                    public void selTimeCallBack(String date) {
-                        Toast.makeText(MainActivity.this, date, Toast.LENGTH_SHORT).show();
+                    public void selTimeCallBack(String date, int typePm) {
+                        String str = String.valueOf(typePm);
+                        Toast.makeText(MainActivity.this, date + "  " + str, Toast.LENGTH_SHORT).show();
                     }
                 });
                 dingCalendarViewDialogFragment.show(getSupportFragmentManager(), "dingCalendarViewDialogFragment");

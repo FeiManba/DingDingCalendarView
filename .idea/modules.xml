@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DingDingCalendarView.iml" filepath="$PROJECT_DIR$/DingDingCalendarView.iml" group="DingDingCalendarView" />
+      <module fileurl="file://$PROJECT_DIR$/app/DingDingCalendarView-app.iml" filepath="$PROJECT_DIR$/app/DingDingCalendarView-app.iml" group="DingDingCalendarView/app" />
+      <module fileurl="file://$PROJECT_DIR$/dingdingcalendarview/DingDingCalendarView-dingdingcalendarview.iml" filepath="$PROJECT_DIR$/dingdingcalendarview/DingDingCalendarView-dingdingcalendarview.iml" group="DingDingCalendarView/dingdingcalendarview" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="DingDingCalendarView/app" />
+      <module fileurl="file://$PROJECT_DIR$/branch-DingDingCalendarView.iml" filepath="$PROJECT_DIR$/branch-DingDingCalendarView.iml" group="DingDingCalendarView" />
+      <module fileurl="file://$PROJECT_DIR$/dingdingcalendarview/dingdingcalendarview.iml" filepath="$PROJECT_DIR$/dingdingcalendarview/dingdingcalendarview.iml" group="DingDingCalendarView/dingdingcalendarview" />
+    </modules>
+  </component>
+</project>

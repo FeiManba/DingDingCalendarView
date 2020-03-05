@@ -45,22 +45,22 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     private RelativeLayout mReTimeWidget;
     private TextView mTvOk;
     private ViewPager mViewPagerCalendar;
-    private DatePickerView mHourV;
-    private DatePickerView mMinuteV;
+    private DatePickerView mPickerPm;
     private RelativeLayout mReHourWidget;
-    private static final int MAX_MINUTE = 59;
-    private static final int MAX_HOUR = 23;
-    private static final int MIN_MINUTE = 0;
-    private static final int MIN_HOUR = 0;
-
-    private ArrayList<String> year, month, day, hour, minute;
-    private int startHour, startMinute, endHour, endMinute;
-    private boolean spanYear, spanMon, spanDay, spanHour, spanMin;
+    private ArrayList<String> pm;
+    private int startPm, endPm;
+    private boolean spanPm;
     private Calendar selectedCalender;
     private LinearLayout mLlYearMonth;
     private CalendarIntervalViewAdapter mCalendarViewAdapter;
     private OnSelTimeListener selTimeListener;
     private View mVWidget;
+    //0 上午 1 下午
+    private int typePm = 0;
+
+    public void setTypePm(int typePm) {
+        this.typePm = typePm;
+    }
 
     public void setSelectedCalender(Calendar selectedCalender) {
         this.selectedCalender = selectedCalender;
@@ -183,74 +183,35 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     }
 
     private void initTime() {
-        spanHour = true;
-        spanMin = true;
+        spanPm = true;
         addListener();
         initTimer();
     }
 
     private void initTimer() {
         initArrayList();
-        startMinute = 0;
-        startHour = 0;
-        endHour = 23;
-        endMinute = 59;
-
-        if (spanHour) {
-            if ((scrollUnits & SCROLL_TYPE.HOUR.value) != SCROLL_TYPE.HOUR.value) {
-                hour.add(formatTimeUnit(startHour));
-            } else {
-                for (int i = startHour; i <= endHour; i++) {
-                    hour.add(formatTimeUnit(i));
-                }
-            }
-
-            if ((scrollUnits & SCROLL_TYPE.MINUTE.value) != SCROLL_TYPE.MINUTE.value) {
-                minute.add(formatTimeUnit(startMinute));
-            } else {
-                for (int i = startMinute; i <= MAX_MINUTE; i++) {
-                    minute.add(formatTimeUnit(i));
-                }
-            }
-        } else if (spanMin) {
-            hour.add(formatTimeUnit(startHour));
-            if ((scrollUnits & SCROLL_TYPE.MINUTE.value) != SCROLL_TYPE.MINUTE.value) {
-                minute.add(formatTimeUnit(startMinute));
-            } else {
-                for (int i = startMinute; i <= endMinute; i++) {
-                    minute.add(formatTimeUnit(i));
-                }
-            }
-
+        startPm = 0;
+        endPm = 1;
+        if (spanPm) {
+            pm.add("上午");
+            pm.add("下午");
         }
-
         loadComponent();
     }
 
     private void loadComponent() {
-        mHourV.setData(hour);
-        mMinuteV.setData(minute);
-        mHourV.setSelected(formatTimeUnit(selectedCalender.get(Calendar.HOUR_OF_DAY)));
-        mMinuteV.setSelected(formatTimeUnit(selectedCalender.get(Calendar.MINUTE)));
+        mPickerPm.setData(pm);
+        mPickerPm.setSelected(typePm == 0 ? 0 : 1);
         executeScroll();
     }
 
     private void executeScroll() {
-        mHourV.setCanScroll(hour.size() > 1 && (scrollUnits & SCROLL_TYPE.HOUR.value) == SCROLL_TYPE.HOUR.value);
-        mMinuteV.setCanScroll(minute.size() > 1 && (scrollUnits & SCROLL_TYPE.MINUTE.value) == SCROLL_TYPE.MINUTE.value);
+        mPickerPm.setCanScroll(pm.size() > 1);
     }
 
     private void initArrayList() {
-        if (year == null) year = new ArrayList<>();
-        if (month == null) month = new ArrayList<>();
-        if (day == null) day = new ArrayList<>();
-        if (hour == null) hour = new ArrayList<>();
-        if (minute == null) minute = new ArrayList<>();
-        year.clear();
-        month.clear();
-        day.clear();
-        hour.clear();
-        minute.clear();
+        if (pm == null) pm = new ArrayList<>();
+        pm.clear();
     }
 
     /**
@@ -262,51 +223,12 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
 
     private void addListener() {
         //选择小时
-        mHourV.setOnSelectListener(new DatePickerView.onSelectListener() {
+        mPickerPm.setOnSelectListener(new DatePickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
-                int num = Integer.parseInt(text);
-                selectedCalender.set(Calendar.HOUR_OF_DAY, num);
-                if (num > 12) {
-                    mTvSelPm.setText("下午");
-                } else {
-                    mTvSelPm.setText("上午");
-                }
-                minuteChange();
+                mTvSelPm.setText(text);
             }
         });
-
-        //选择分钟
-        mMinuteV.setOnSelectListener(new DatePickerView.onSelectListener() {
-            @Override
-            public void onSelect(String text) {
-                selectedCalender.set(Calendar.MINUTE, Integer.parseInt(text));
-            }
-        });
-    }
-
-    private void minuteChange() {
-        if ((scrollUnits & SCROLL_TYPE.MINUTE.value) == SCROLL_TYPE.MINUTE.value) {
-            minute.clear();
-            int selectedHour = selectedCalender.get(Calendar.HOUR_OF_DAY);
-            if (selectedHour == startHour) {
-                for (int i = startMinute; i <= MAX_MINUTE; i++) {
-                    minute.add(formatTimeUnit(i));
-                }
-            } else if (selectedHour == endHour) {
-                for (int i = MIN_MINUTE; i <= endMinute; i++) {
-                    minute.add(formatTimeUnit(i));
-                }
-            } else {
-                for (int i = MIN_MINUTE; i <= MAX_MINUTE; i++) {
-                    minute.add(formatTimeUnit(i));
-                }
-            }
-            selectedCalender.set(Calendar.MINUTE, Integer.parseInt(minute.get(0)));
-            mMinuteV.setData(minute);
-            mMinuteV.setSelected(0);
-        }
-        executeScroll();
     }
 
     private void initView(View rootView) {
@@ -321,8 +243,7 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         mReTimeWidget = (RelativeLayout) rootView.findViewById(R.id.re_time_widget);
         mTvOk = (TextView) rootView.findViewById(R.id.tv_ok);
         mViewPagerCalendar = (ViewPager) rootView.findViewById(R.id.view_pager_calendar);
-        mHourV = (DatePickerView) rootView.findViewById(R.id.hour_v);
-        mMinuteV = (DatePickerView) rootView.findViewById(R.id.minute_v);
+        mPickerPm = (DatePickerView) rootView.findViewById(R.id.picker_am);
         mReHourWidget = (RelativeLayout) rootView.findViewById(R.id.re_hour_widget);
         mReSelYearMonthWidget.setOnClickListener(this);
         mReTimeWidget.setOnClickListener(this);
@@ -351,10 +272,11 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         } else if (id == R.id.re_time_widget) {
             selHour();
         } else if (id == R.id.tv_ok) {//确定
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.CHINA);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
             String day = sdf.format(selectedCalender.getTime());
+            String pm = mTvSelPm.getText().toString();
             if (selTimeListener != null) {
-                selTimeListener.selTimeCallBack(day);
+                selTimeListener.selTimeCallBack(day, pm.equals("下午") ? 1 : 0);
                 dismiss();
             }
         } else if (id == R.id.v_widget) {
@@ -363,7 +285,11 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
     }
 
     public interface OnSelTimeListener {
-        void selTimeCallBack(String date);
+        /**
+         * @param date   yyyy年MM月dd日
+         * @param typePm 0 上午 1 下午
+         */
+        void selTimeCallBack(String date, int typePm);
     }
 
     private void selHour() {
