@@ -134,7 +134,7 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
                 new OnSelectDateListener() {
                     @Override
                     public void onSelectDate(CalendarDate date) {
-                        mTvSelDate.setText(date.toString());
+                        mTvSelDate.setText(date.lintToString());
                         selectedCalender.set(Calendar.YEAR, date.year);
                         selectedCalender.set(Calendar.MONTH, date.month - 1);
                         selectedCalender.set(Calendar.DAY_OF_MONTH, date.day);
@@ -255,7 +255,7 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
         int year = selectedCalender.get(Calendar.YEAR);
         int month = selectedCalender.get(Calendar.MONTH) + 1;
         int day = selectedCalender.get(Calendar.DAY_OF_MONTH);
-        String selDate = year + "-" + month + "-" + day;
+        String selDate = year + "年" + month + "月" + day + "日";
         mTvSelDate.setText(selDate);
         mTvSelPm.setText(typePm == 1 ? "下午" : "上午");
         mTvOk.setText("确定");

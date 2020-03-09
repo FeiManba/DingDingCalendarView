@@ -1,7 +1,9 @@
 package com.frmanba.dingdingcalendarview.model;
 
 import android.util.Log;
+
 import com.frmanba.dingdingcalendarview.Utils;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -107,6 +109,10 @@ public class CalendarDate implements Serializable {
     @Override
     public String toString() {
         return year + "-" + month + "-" + day;
+    }
+
+    public String lintToString() {
+        return year + "年" + month + "月" + day + "日";
     }
 
     public int getYear() {
