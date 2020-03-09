@@ -195,7 +195,7 @@
                 android:visibility="gone">
                 <com.frmanba.dingdingcalendarview.widget.DatePickerView
                     android:id="@+id/picker_am"
-                    android:layout_width="50dp"
+                    android:layout_width="match_parent"
                     android:layout_centerInParent="true"
                     android:layout_height="150dp"/>
             </RelativeLayout>

@@ -138,6 +138,7 @@ public class DingCalendarViewDialogFragment extends DialogFragment implements Vi
                         selectedCalender.set(Calendar.YEAR, date.year);
                         selectedCalender.set(Calendar.MONTH, date.month - 1);
                         selectedCalender.set(Calendar.DAY_OF_MONTH, date.day);
+                        selHour();
                     }
 
                     @Override

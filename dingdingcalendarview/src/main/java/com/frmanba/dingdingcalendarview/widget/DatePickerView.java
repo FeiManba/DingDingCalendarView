@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import com.frmanba.dingdingcalendarview.R;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class DatePickerView extends View {
      * 选中的位置，这个位置是mDataList的中心位置，一直不变
      */
     private int mCurrentSelected;
-    private Paint mPaint, nPaint;
+    private Paint mPaint, nPaint, linePaint;
     private float mMaxTextSize = 80;
     private float mMinTextSize = 40;
     private float mMaxTextAlpha = 255;
@@ -176,6 +177,10 @@ public class DatePickerView extends View {
         nPaint.setStyle(Style.FILL);
         nPaint.setTextAlign(Align.CENTER);
         nPaint.setColor(Color.parseColor("#333333"));
+        //第三个paint
+        linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        linePaint.setStyle(Style.FILL);
+        linePaint.setColor(Color.parseColor("#DDDDDD"));
     }
 
     @Override
@@ -188,6 +193,7 @@ public class DatePickerView extends View {
     }
 
     private void drawData(Canvas canvas) {
+
         // 先绘制选中的text再往上往下绘制其余的text
         float scale = parabola(mViewHeight / 4.0f, mMoveLen);
         float size = (mMaxTextSize - mMinTextSize) * scale + mMinTextSize;
@@ -198,8 +204,13 @@ public class DatePickerView extends View {
         float y = (float) (mViewHeight / 2.0 + mMoveLen);
         FontMetricsInt fmi = mPaint.getFontMetricsInt();
         float baseline = (float) (y - (fmi.bottom / 2.0 + fmi.top / 2.0));
-
+        //上方的线
+        canvas.drawLine(0, (float) (mViewHeight / 2.0 - (size / 2) - 5), mViewWidth,
+                (float) (mViewHeight / 2.0 - (size / 2) - 5), linePaint);
         canvas.drawText(mDataList.get(mCurrentSelected), x, baseline, mPaint);
+        //下方的线
+        canvas.drawLine(0, (float) (mViewHeight / 2.0 + (size / 2) + 5), mViewWidth,
+                (float) (mViewHeight / 2.0 + (size / 2) + 5), linePaint);
         // 绘制上方data
         for (int i = 1; (mCurrentSelected - i) >= 0; i++) {
             drawOtherText(canvas, i, -1);
